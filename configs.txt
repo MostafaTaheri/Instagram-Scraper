@@ -1,0 +1,8 @@
+[My-configs]
+Users_List = files/users.txt
+User_output = files/instagramers_info.json
+Hashtag_List = files/hashtags.txt
+Hashtag_output = files/Instagram_hashtag.json
+URL = https://www.instagram.com/explore/tags/
+Video_Downloads = Downloads/Video
+Image_Downloads = Downloads/Image
