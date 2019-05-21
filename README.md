@@ -1,7 +1,7 @@
 # Instagram-Scraper
 Welcome!
 
-The Instagram scraper is a command line application with 3 parts including:
+The Instagram scraper is a python  command line application with 3 parts including:
 
 1- User's information scraper:
 
