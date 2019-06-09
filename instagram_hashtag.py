@@ -51,7 +51,7 @@ class InstagramHashtag():
                     ['edge_hashtag_to_media']\
                     ['page_info']['end_cursor']
                     self.url2 = self.base_url + '&max_id=' + end_cursor
-                    json_file =None
+                    json_file = None
                 else:
                     self.flag = False
 
