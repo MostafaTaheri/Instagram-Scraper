@@ -21,35 +21,40 @@ class InstagramHashtag():
             self.url2 = config_file['Url'] + hashtag + '/?__a=1'
             self.flag = True
             self.arr_meta_data_info = []
+            
+            while self.flag:
+                response = urllib.request.urlopen(self.url2)
+                json_file = json.load(response)                    
+                post_count = json_file['graphql']['hashtag']\
+                    ['edge_hashtag_to_media']['count']
 
+                for post in json_file['graphql']['hashtag']\
+                        ['edge_hashtag_to_media']['edges']:
+                    self.arr_meta_data_info.append(Tools.packer(\
+                    Hashtag = hashtag,
+                    Is_Video = post['node']['is_video'],
+                    Thumbnail_url = post['node']['display_url'],
+                    Short_Code = post['node']['shortcode'],
+                    Like_Count = post['node']['edge_liked_by']['count'],
+                    Video_View_Count = \
+                    self.extract_video_view_count(post['node']),
+                    Time_Stamp = post['node']['taken_at_timestamp'],
+                    Caption = self.extract_caption(post['node']),
+                    Owner_Id = post['node']['owner']['id']))
 
-            response = urllib.request.urlopen(self.url2)
-            json_file = json.load(response)                    
-            post_count = json_file['graphql']['hashtag']\
-                ['edge_hashtag_to_media']['count']
-
-            for post in json_file['graphql']['hashtag']\
-                    ['edge_hashtag_to_media']['edges']:
-                self.arr_meta_data_info.append(Tools.packer(\
-                Hashtag = hashtag,
-                Is_Video = post['node']['is_video'],
-                Thumbnail_url = post['node']['display_url'],
-                Short_Code = post['node']['shortcode'],
-                Like_Count = post['node']['edge_liked_by']['count'],
-                Video_View_Count = \
-                self.extract_video_view_count(post['node']),
-                Time_Stamp = post['node']['taken_at_timestamp'],
-                Caption = self.extract_caption(post['node']),
-                Owner_Id = post['node']['owner']['id']))
-
+            
                 # detect pages
                 if json_file['graphql']['hashtag']\
                     ['edge_hashtag_to_media']['page_info']\
                     ['has_next_page'] == True:
-                        end_cursor = json_file['graphql']['hashtag']\
-                        ['edge_hashtag_to_media']\
-                        ['page_info']['end_cursor']
-                        self.url2 = self.base_url + '&max_id=' + end_cursor
+                    end_cursor = json_file['graphql']['hashtag']\
+                    ['edge_hashtag_to_media']\
+                    ['page_info']['end_cursor']
+                    self.url2 = self.base_url + '&max_id=' + end_cursor
+                    json_file =None
+                else:
+                    self.flag = False
+
             return self.arr_meta_data_info           
         except:
             print('Occurred some errors')
@@ -141,9 +146,3 @@ class InstagramHashtag():
             return json_file['graphql']['shortcode_media']['display_url']
         except:
             return None
-    
-        
-    
-    
-
-
