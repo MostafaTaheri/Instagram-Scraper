@@ -25,8 +25,6 @@ class InstagramHashtag():
             while self.flag:
                 response = urllib.request.urlopen(self.url2)
                 json_file = json.load(response)                    
-                post_count = json_file['graphql']['hashtag']\
-                    ['edge_hashtag_to_media']['count']
 
                 for post in json_file['graphql']['hashtag']\
                         ['edge_hashtag_to_media']['edges']:
@@ -51,13 +49,13 @@ class InstagramHashtag():
                     ['edge_hashtag_to_media']\
                     ['page_info']['end_cursor']
                     self.url2 = self.base_url + '&max_id=' + end_cursor
-                    json_file = None
+                    response = json_file = None
                 else:
-                    self.flag = False
-
-            return self.arr_meta_data_info           
-        except:
+                    self.flag = False       
+        except Exception as ex:
             print('Occurred some errors')
+        finally:
+             return self.arr_meta_data_info
 
     def downloader(self, directory, short_code, is_video = False):
         self.directory = directory
