@@ -17,8 +17,8 @@ class InstagramHashtag():
     def extract_data(self, hashtag, config_file):
         try:
             self.hashtag = hashtag
-            self.base_url = config_file['Url'] + hashtag + '/?__a=1'
-            self.url2 = config_file['Url'] + hashtag + '/?__a=1'
+            self.base_url = config_file['Url'] + urllib.parse.quote(self.hashtag) + '/?__a=1'
+            self.url2 = config_file['Url'] + urllib.parse.quote(self.hashtag) + '/?__a=1'
             self.flag = True
             self.arr_meta_data_info = []
             
